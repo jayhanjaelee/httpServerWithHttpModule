@@ -80,10 +80,11 @@ const httpRequestListener = function (request, response) {
           content: post.content,
           userId: post.userId
         })
-      })
 
-      response.writeHeader(200, { 'Content-Type': 'application/json' })
-      response.end(JSON.stringify({ 'posts': posts }))
+        response.writeHeader(200, { 'Content-Type': 'application/json' })
+        response.end(JSON.stringify({ 'message': 'postCreated' }))
+
+      })
 
     }
   }
