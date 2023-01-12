@@ -30,7 +30,8 @@ const posts = [
 
 // 아래에 코드를 작성해 주세요.
 
-const http = require('http')
+const http = require('http');
+const { title } = require('process');
 
 const server = http.createServer()
 
@@ -41,6 +42,7 @@ const httpRequestListener = function (request, response) {
 
   if (method === 'POST') {
 
+    // 회원가입
     if (url === '/users/signup') {
 
       request.on('data', (data) => {
@@ -59,7 +61,30 @@ const httpRequestListener = function (request, response) {
 
         response.writeHeader(200, { 'Content-Type': 'application/json' })
         response.end(JSON.stringify({ 'message': 'userCreated' }))
+
       })
+
+      // 포스트
+    } else if (url === '/posts/post') {
+
+      request.on('data', (data) => {
+        body += data
+      })
+
+      request.on('end', () => {
+        const post = JSON.parse(body)
+
+        posts.push({
+          id: post.id,
+          title: post.title,
+          content: post.content,
+          userId: post.userId
+        })
+      })
+
+      response.writeHeader(200, { 'Content-Type': 'application/json' })
+      response.end(JSON.stringify({ 'posts': posts }))
+
     }
   }
 }
